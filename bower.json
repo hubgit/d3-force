@@ -1,0 +1,17 @@
+{
+  "name": "d3-force",
+  "version": "0.0.1",
+  "keywords": [
+    "seed",
+    "polymer",
+    "web-components",
+    "d3"
+  ],
+  "main": "d3-force.html",
+  "dependencies": {
+    "polymer": "Polymer/polymer#^0.5.1",
+    "d3": "^3.5.3",
+    "font-roboto": "Polymer/font-roboto#~0.5.4"
+  },
+  "devDependencies": {}
+}

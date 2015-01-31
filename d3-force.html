@@ -1,0 +1,144 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../font-roboto/roboto.html">
+<script src="../d3/d3.min.js"></script>
+
+<polymer-element name="d3-force">
+    <template>
+        <link rel="stylesheet" href="d3-force.css">
+
+        <div id="container"></div>
+    </template>
+    <script>
+    Polymer({
+        ready: function() {
+            this.reset();
+        },
+        reset: function() {
+            this.nodes = [];
+            this.links = [];
+            this.index = {};
+            this.draw();
+        },
+        draw: function() {
+            var container = this.$.container;
+            var width = container.offsetWidth;
+            var height = container.offsetHeight;
+
+            this.force = d3.layout.force()
+                .linkDistance(70)
+                .charge(-800)
+                .friction(0.25)
+                .size([width, height])
+                .nodes(this.nodes)
+                .links(this.links)
+                .on('start', this.tick.bind(this));
+
+            var frame = d3.select(container);
+            this.labelsContainer = frame.append('div').attr('id', 'labels');
+            this.labels = this.labelsContainer.selectAll('.label');
+
+            var zoom = d3.behavior.zoom()
+                .on('zoom', this.zoom.bind(this));
+
+            frame.call(zoom);
+
+            this.run();
+        },
+        zoom: function() {
+            var transform = 'translate(' + d3.event.translate[0] + 'px,' + d3.event.translate[1] + 'px) scale(' + d3.event.scale + ')';
+
+            this.labelsContainer.style({
+                'transform': transform,
+                '-webkit-transform': transform,
+            });
+        },
+        render: function() {
+            var nodeSize = this.nodeSize;
+
+            this.labels.attr('style', function(d) {
+                var transform = 'translate3d(' + (d.x - (this.offsetWidth / 2)) + 'px,' + d.y + 'px, 0)';
+
+                var styles = [
+                    'transform:' + transform,
+                    '-webkit-transform:' + transform,
+                    'font-size:' + nodeSize(d),
+                ];
+
+                return styles.join(';');
+            }).attr('data-expanded', function(d) {
+                return d.expanded ? 'true' : 'false';
+            }).attr('data-selected', function(d) {
+                return d.selected ? 'true' : 'false';
+            });
+        },
+        nodeSize: function(d) {
+            return 13 + 'px';
+        },
+        tick: function() {
+            this.force.tick();
+
+            requestAnimationFrame(this.render.bind(this));
+
+            if (this.force.alpha() > 0) {
+                requestAnimationFrame(this.tick.bind(this));
+            }
+        },
+        run: function() {
+            this.labels = this.labels.data(this.nodes, function(d) {
+                return d.id;
+            });
+
+            this.labels.enter().append('span')
+                .attr('class', 'label')
+                .append('span')
+                .call(this.force.drag)
+                .text(function(d) { return d.name; })
+                .on('click', this.click.bind(this));
+
+            this.force.start();
+        },
+        click: function(d) {
+            if (d3.event.defaultPrevented) {
+                return; // ignore drag
+            }
+
+            d.selected = true;
+
+            this.labels.attr('data-selected', function(d) {
+                return d.selected ? 'true' : 'false';
+            });
+
+            if (!d.expanded) {
+                this.expand(d).then(function(links) {
+                    this.addLinks(links);
+                    this.run();
+                }.bind(this));
+            }
+        },
+        expand: function(d) {
+            alert('Implement this!');
+        },
+        addLinks: function(links) {
+            links.forEach(this.addLink.bind(this));
+            this.run();
+        },
+        addLink: function(link) {
+            var source = this.addNode(link['source']);
+            var target = this.addNode(link['target']);
+
+            this.links.push({
+                source: source,
+                target: target,
+            })
+        },
+        addNode: function(node) {
+            if (!this.index[node.id]) {
+                this.index[node.id] = node;
+                this.nodes.push(node);
+            }
+
+            return this.index[node.id];
+        }
+    });
+    </script>
+</polymer-element>
