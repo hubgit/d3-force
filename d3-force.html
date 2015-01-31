@@ -34,6 +34,13 @@
             var width = container.offsetWidth;
             var height = container.offsetHeight;
 
+
+            var existing = container.querySelector('#labels');
+
+            if (existing) {
+                container.removeChild(existing);
+            }
+
             this.force = d3.layout.force()
                 .linkDistance(this.linkDistance)
                 .charge(this.charge)
