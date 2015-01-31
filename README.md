@@ -1,11 +1,13 @@
 # d3-force
 
-The most important things to know are:
+## Notes
 
 1. Every object must have an `id` (used to identify the object) and a `name` (for displaying the object).
 2. Each link must have a `source` and a `target` object.
 3. Links can be added to the graph by passing an array of links to `addLinks`, or by overriding the `expand` function and returning a Promise.
 4. Nodes are added to the graph automatically.
+
+## Getting started
 
 ```bash
 bower install --save hubgit/d3-force
