@@ -51,8 +51,7 @@ window.addEventListener('polymer-ready', function(e) {
       id: '6WoTvA9qinpHtSRJuldYh6',
       name: 'The Fall',
       href: 'https://api.spotify.com/v1/artists/6WoTvA9qinpHtSRJuldYh6',
-      popularity: 52,
-      selected: true,
+      popularity: 52
   });
 });
 ```
