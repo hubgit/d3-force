@@ -18,7 +18,7 @@ bower install --save hubgit/d3-force
 ```
 
 ```html
-<link rel="import" href="../bower_components/d3-force/d3-force.html">
+<link rel="import" href="bower_components/d3-force/d3-force.html">
 ```
 
 ```html
