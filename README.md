@@ -1,7 +1,5 @@
 # d3-force
 
-## Demo
-
 [Demo](http://git.macropus.org/d3-force/components/d3-force/demo.html)
 
 ## Notes
