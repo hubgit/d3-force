@@ -55,16 +55,14 @@
             });
         };
 
-        var source = {
+        var seed = {
             id: '6WoTvA9qinpHtSRJuldYh6',
             name: 'The Fall',
             popularity: 52,
             selected: true,
         }
 
-        spotify.related(source).then(function(items) {
-            graph.addLinks(items);
-        })
+        graph.expand(seed);
     });
     </script>
 </body>
