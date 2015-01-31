@@ -4,10 +4,16 @@ See the [component page](http://hubgit.github.io/d3-force) for more information.
 
 ## Getting Started
 
+The most important things to know are:
+
+1. Every object must have an `id` (used to identify the object) and a `name` (for displaying the object).
+2. Each link must have a `source` and a `target` object.
+3. Links can be added to the graph by passing an array of links to `addLinks`, or by overriding the `expand` function and returning a Promise.
+4. Nodes are added to the graph automatically.
 
 ```bash
 bower install --save hubgit/d3-force
-```
+```a
 
 ```html
 <link rel="import" href="../bower_components/d3-force.html">
@@ -40,14 +46,13 @@ window.addEventListener('polymer-ready', function(e) {
   }
 
   // start with a seed node
-  var seed = {
+  // every node must have an id and a name
+  graph.click({
       id: '6WoTvA9qinpHtSRJuldYh6',
       name: 'The Fall',
+      href: 'https://api.spotify.com/v1/artists/6WoTvA9qinpHtSRJuldYh6',
       popularity: 52,
       selected: true,
-  }
-
-  // expand the seed node
-  graph.expand(seed);
+  });
 });
 ```
