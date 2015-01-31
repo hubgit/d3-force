@@ -121,7 +121,6 @@
             if (!d.expanded) {
                 this.expand(d).then(function(links) {
                     this.addLinks(links);
-                    this.run();
                 }.bind(this));
             }
         },
