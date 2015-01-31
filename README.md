@@ -1,9 +1,5 @@
 # d3-force
 
-See the [component page](http://hubgit.github.io/d3-force) for more information.
-
-## Getting Started
-
 The most important things to know are:
 
 1. Every object must have an `id` (used to identify the object) and a `name` (for displaying the object).
