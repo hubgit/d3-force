@@ -1,5 +1,9 @@
 # d3-force
 
+## Demo
+
+[Demo](http://git.macropus.org/d3-force/components/d3-force/demo.html)
+
 ## Notes
 
 1. Every object must have an `id` (used to identify the object) and a `name` (for displaying the object).
