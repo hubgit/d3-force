@@ -20,12 +20,17 @@
     <d3-force linkDistance="100" friction="0.1"></d3-force>
 
     <script>
-    var spotify = {
-        related: function(source) {
+    window.addEventListener('polymer-ready', function(e) {
+        var graph = document.querySelector('d3-force');
+
+        graph.nodeSize = function(d) {
+            return 10 + ((d.popularity / 40) * 5) + 'px';
+        };
+
+        graph.expand = function(source) {
             return new Promise(function(respond, reject) {
-                var url = 'https://api.spotify.com/v1/artists/' + source.id + '/related-artists';
                 var request = new XMLHttpRequest();
-                request.open('GET', url);
+                request.open('GET', source.href + '/related-artists');
                 request.responseType = 'json';
                 request.onload = function() {
                     respond(this.response.artists.map(function(artist) {
@@ -36,33 +41,16 @@
                     }));
                 };
                 request.send();
-            }.bind(this));
-        }
-    };
-
-    window.addEventListener('polymer-ready', function(e) {
-        var graph = document.querySelector('d3-force');
-
-        graph.nodeSize = function(d) {
-            return 10 + ((d.popularity / 40) * 5) + 'px';
-        };
-
-        graph.expand = function(source) {
-            return new Promise(function(respond, reject) {
-                spotify.related(source).then(function(items) {
-                    graph.addLinks(items);
-                })
             });
         };
 
-        var seed = {
+        graph.click({
             id: '6WoTvA9qinpHtSRJuldYh6',
             name: 'The Fall',
+            href: 'https://api.spotify.com/v1/artists/6WoTvA9qinpHtSRJuldYh6',
             popularity: 52,
             selected: true,
-        }
-
-        graph.expand(seed);
+        });
     });
     </script>
 </body>

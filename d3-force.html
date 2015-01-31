@@ -108,7 +108,7 @@
             this.force.start();
         },
         click: function(d) {
-            if (d3.event.defaultPrevented) {
+            if (d3.event && d3.event.defaultPrevented) {
                 return; // ignore drag
             }
 
