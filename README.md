@@ -19,13 +19,10 @@ bower install --save hubgit/d3-force
 
 ```html
 <link rel="import" href="bower_components/d3-force/d3-force.html">
-```
 
-```html
 <d3-force></d3-force>
-```
 
-```js
+<script>
 window.addEventListener('polymer-ready', function(e) {
   var graph = document.querySelector('d3-force');
 
@@ -56,4 +53,5 @@ window.addEventListener('polymer-ready', function(e) {
       popularity: 52
   });
 });
+</script>
 ```
