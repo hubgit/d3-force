@@ -9,7 +9,7 @@ The most important things to know are:
 
 ```bash
 bower install --save hubgit/d3-force
-```a
+```
 
 ```html
 <link rel="import" href="../bower_components/d3-force.html">
