@@ -18,7 +18,7 @@
         * @default 70
         */
         linkDistance: 70,
-        
+
         /**
         * The charge strength (negative, for node repulsion)
         *
@@ -27,7 +27,7 @@
         * @default -800
         */
         charge: -800,
-        
+
         /**
         * The friction coefficient (velocity decay)
         *
@@ -36,7 +36,7 @@
         * @default 0.25
         */
         friction: 0.25,
-        
+
         ready: function() {
             this.reset();
         },
@@ -116,16 +116,24 @@
                 requestAnimationFrame(this.tick.bind(this));
             }
         },
+        node: function(d) {
+            var node = document.createElement('span');
+            node.setAttribute('class', 'label');
+
+            var span = document.createElement('span');
+            span.textContent = d.name;
+
+            node.appendChild(span);
+
+            return node;
+        },
         run: function() {
             this.labels = this.labels.data(this.nodes, function(d) {
                 return d.id;
             });
 
-            this.labels.enter().append('span')
-                .attr('class', 'label')
-                .append('span')
+            this.labels.enter().append(this.node)
                 .call(this.force.drag)
-                .text(function(d) { return d.name; })
                 .on('click', this.click.bind(this));
 
             this.force.start();
