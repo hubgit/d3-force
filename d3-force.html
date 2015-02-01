@@ -18,8 +18,25 @@
         * @default 70
         */
         linkDistance: 70,
+        
+        /**
+        * The charge strength (negative, for node repulsion)
+        *
+        * @attribute charge
+        * @type integer
+        * @default -800
+        */
         charge: -800,
+        
+        /**
+        * The friction coefficient (velocity decay)
+        *
+        * @attribute friction
+        * @type float
+        * @default 0.25
+        */
         friction: 0.25,
+        
         ready: function() {
             this.reset();
         },
@@ -33,7 +50,6 @@
             var container = this.$.container;
             var width = container.offsetWidth;
             var height = container.offsetHeight;
-
 
             var existing = container.querySelector('#labels');
 
