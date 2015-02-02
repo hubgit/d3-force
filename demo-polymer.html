@@ -28,7 +28,11 @@
 
         graph.node = function(d) {
             var node = document.createElement('d3-node');
-            node.item = d;
+
+            node.item = {
+                name: d.name,
+                images: d.images
+            }
 
             return node;
         };
