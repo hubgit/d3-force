@@ -5,7 +5,7 @@
 ## Notes
 
 * The layout uses DOM nodes rather than SVG. This makes the node templates easier, but means that only the nodes are drawn, and not the links between them.
-* The nodes are positioned using CSS 3D transforms, so are composited using the GPU.
+* The nodes are positioned using CSS 3D transforms, so are composited using the GPU. This means that rendering the nodes takes a minimal amount of time - nearly all of the speed decrease as the graph gets larger is due to the graph layout calculation.
 * By over-riding the `graph.node` function, Polymer elements can be used as nodes: see [this demo](http://git.macropus.org/d3-force/components/d3-force/demo-polymer.html).
 
 ## Nodes
