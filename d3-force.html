@@ -74,8 +74,6 @@
                 .on('zoom', this.zoom.bind(this));
 
             frame.call(zoom);
-
-            this.run();
         },
         zoom: function() {
             var transform = 'translate(' + d3.event.translate[0] + 'px,' + d3.event.translate[1] + 'px) scale(' + d3.event.scale + ')';
@@ -105,10 +103,15 @@
             });
         },
         nodeSize: function(d) {
-            return 13 + 'px';
+            return '13px';
         },
         tick: function() {
-            this.force.tick();
+            //var ticks = Math.ceil(this.nodes.length / 50);
+            //console.log(ticks, 'ticks');
+
+            //for (var i = ticks; i > 0; i--) {
+                this.force.tick();
+            //}
 
             requestAnimationFrame(this.render.bind(this));
 
