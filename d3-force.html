@@ -100,6 +100,8 @@
                 return d.expanded ? 'true' : 'false';
             }).attr('data-selected', function(d) {
                 return d.selected ? 'true' : 'false';
+            }).attr('data-type', function(d) {
+                return d.type;
             });
         },
         nodeSize: function(d) {
