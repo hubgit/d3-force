@@ -58,8 +58,15 @@
             }
 
             this.force = d3.layout.force()
-                .linkDistance(this.linkDistance)
-                .charge(this.charge)
+                .linkDistance(function(d) {
+                    return d.distance || this.linkDistance;
+                }.bind(this))
+                .linkStrength(function(d) {
+                    return d.strength || 0.5;
+                })
+                .charge(function(d) {
+                    return d.charge || this.charge;
+                }.bind(this))
                 .friction(this.friction)
                 .size([width, height])
                 .nodes(this.nodes)
@@ -148,13 +155,21 @@
                 return; // ignore drag
             }
 
-            d.selected = true;
+            if (d.selected) {
+                // expand linked nodes if already selected
+                this.links.filter(function(link) {
+                    return !link.target.selected && link.source.id === d.id && link.target.type === d.type;
+                }).forEach(function(link) {
+                    this.click(link.target);
+                }.bind(this));
+            } else {
+                d.selected = true;
 
-            this.labels.attr('data-selected', function(d) {
-                return d.selected ? 'true' : 'false';
-            });
+                this.labels.attr('data-selected', function(d) {
+                    return d.selected ? 'true' : 'false';
+                });
 
-            if (!d.expanded) {
+                // expand this node
                 this.expand(d).then(function(links) {
                     this.addLinks(links);
                 }.bind(this));
@@ -171,6 +186,8 @@
             var source = this.addNode(link['source']);
             var target = this.addNode(link['target']);
 
+            target.inDegree++;
+
             this.links.push({
                 source: source,
                 target: target,
@@ -178,6 +195,7 @@
         },
         addNode: function(node) {
             if (!this.index[node.id]) {
+                node.inDegree = 0;
                 this.index[node.id] = node;
                 this.nodes.push(node);
             }
