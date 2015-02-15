@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>d3-force demo</title>
+    <script src="../webcomponentsjs/webcomponents.js"></script>
+    <link rel="import" href="d3-force.html">
+
+    <style>
+        html, body {
+            height: 100%;
+            width: 100%;
+            overflow: hidden;
+            margin: 0;
+        }
+    </style>
+</head>
+<body unresolved>
+    <d3-force friction="0.25" linkDistance="50" charge="-3000"></d3-force>
+
+    <script>
+    window.addEventListener('polymer-ready', function(e) {
+        var graph = document.querySelector('d3-force');
+
+        graph.nodeSize = function(d) {
+            return 10 + ((d.popularity / 40) * 5) + 'px';
+        };
+
+        graph.expand = function(source) {
+            return new Promise(function(respond, reject) {
+                var request = new XMLHttpRequest();
+                request.open('GET', source.href + '/related-artists');
+                request.responseType = 'json';
+                request.onload = function() {
+                    respond(this.response.artists.map(function(artist) {
+                        return ({
+                            source: source,
+                            target: artist
+                        });
+                    }));
+                };
+                request.send();
+            });
+        };
+
+        graph.click({
+            id: '6WoTvA9qinpHtSRJuldYh6',
+            name: 'The Fall',
+            href: 'https://api.spotify.com/v1/artists/6WoTvA9qinpHtSRJuldYh6',
+            popularity: 52
+        });
+    });
+    </script>
+</body>
+</html>

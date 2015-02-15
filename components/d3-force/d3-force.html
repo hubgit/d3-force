@@ -1,0 +1,209 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../font-roboto/roboto.html">
+<script src="../d3/d3.min.js"></script>
+
+<polymer-element name="d3-force" attributes="linkDistance charge friction">
+    <template>
+        <link rel="stylesheet" href="d3-force.css">
+
+        <div id="container"></div>
+    </template>
+    <script>
+    Polymer({
+        /**
+        * The target distance between linked nodes
+        *
+        * @attribute linkDistance
+        * @type integer
+        * @default 70
+        */
+        linkDistance: 70,
+
+        /**
+        * The charge strength (negative, for node repulsion)
+        *
+        * @attribute charge
+        * @type integer
+        * @default -800
+        */
+        charge: -800,
+
+        /**
+        * The friction coefficient (velocity decay)
+        *
+        * @attribute friction
+        * @type float
+        * @default 0.25
+        */
+        friction: 0.25,
+
+        attached: function() {
+            this.reset();
+        },
+        reset: function() {
+            this.nodes = [];
+            this.links = [];
+            this.index = {};
+            this.draw();
+        },
+        draw: function() {
+            var container = this.$.container;
+            var width = container.offsetWidth;
+            var height = container.offsetHeight;
+
+            var existing = container.querySelector('#labels');
+
+            if (existing) {
+                container.removeChild(existing);
+            }
+
+            this.force = d3.layout.force()
+                .linkDistance(function(d) {
+                    return d.distance || this.linkDistance;
+                }.bind(this))
+                .linkStrength(function(d) {
+                    return d.strength || 0.5;
+                })
+                .charge(function(d) {
+                    return d.charge || this.charge;
+                }.bind(this))
+                .friction(this.friction)
+                .size([width, height])
+                .nodes(this.nodes)
+                .links(this.links)
+                .on('start', this.tick.bind(this));
+
+            var frame = d3.select(container);
+            this.labelsContainer = frame.append('div').attr('id', 'labels');
+            this.labels = this.labelsContainer.selectAll('.label');
+
+            var zoom = d3.behavior.zoom()
+                .on('zoom', this.zoom.bind(this));
+
+            frame.call(zoom);
+        },
+        zoom: function() {
+            var transform = 'translate(' + d3.event.translate[0] + 'px,' + d3.event.translate[1] + 'px) scale(' + d3.event.scale + ')';
+
+            this.labelsContainer.style({
+                'transform': transform,
+                '-webkit-transform': transform,
+            });
+        },
+        render: function() {
+            var nodeSize = this.nodeSize;
+
+            this.labels.attr('style', function(d) {
+                var transform = 'translate3d(' + (d.x - (this.offsetWidth / 2)) + 'px,' + d.y + 'px, 0)';
+
+                var styles = [
+                    'transform:' + transform,
+                    '-webkit-transform:' + transform,
+                    'font-size:' + nodeSize(d),
+                ];
+
+                return styles.join(';');
+            }).attr('data-expanded', function(d) {
+                return d.expanded ? 'true' : 'false';
+            }).attr('data-selected', function(d) {
+                return d.selected ? 'true' : 'false';
+            }).attr('data-type', function(d) {
+                return d.type;
+            });
+        },
+        nodeSize: function(d) {
+            return '100%';
+        },
+        tick: function() {
+            //var ticks = Math.ceil(this.nodes.length / 50);
+            //console.log(ticks, 'ticks');
+
+            //for (var i = ticks; i > 0; i--) {
+                this.force.tick();
+            //}
+
+            requestAnimationFrame(this.render.bind(this));
+
+            if (this.force.alpha() > 0) {
+                requestAnimationFrame(this.tick.bind(this));
+            }
+        },
+        node: function(d) {
+            var node = document.createElement('span');
+            node.setAttribute('class', 'label');
+
+            var span = document.createElement('span');
+            span.textContent = d.name;
+
+            node.appendChild(span);
+
+            return node;
+        },
+        run: function() {
+            this.labels = this.labels.data(this.nodes, function(d) {
+                return d.id;
+            });
+
+            this.labels.enter().append(this.node)
+                .call(this.force.drag)
+                .on('click', this.click.bind(this));
+
+            this.force.start();
+        },
+        click: function(d) {
+            if (d3.event && d3.event.defaultPrevented) {
+                return; // ignore drag
+            }
+
+            if (d.selected) {
+                // expand linked nodes if already selected
+                /*
+                this.links.filter(function(link) {
+                    return !link.target.selected && link.source.id === d.id && link.target.type === d.type;
+                }).forEach(function(link) {
+                    this.click(link.target);
+                }.bind(this));
+                */
+            } else {
+                d.selected = true;
+
+                this.labels.attr('data-selected', function(d) {
+                    return d.selected ? 'true' : 'false';
+                });
+
+                // expand this node
+                this.expand(d).then(function(links) {
+                    this.addLinks(links);
+                }.bind(this));
+            }
+        },
+        expand: function(d) {
+            alert('Implement this!');
+        },
+        addLinks: function(links) {
+            links.forEach(this.addLink.bind(this));
+            this.run();
+        },
+        addLink: function(link) {
+            var source = this.addNode(link['source']);
+            var target = this.addNode(link['target']);
+
+            target.inDegree++;
+
+            this.links.push({
+                source: source,
+                target: target,
+            })
+        },
+        addNode: function(node) {
+            if (!this.index[node.id]) {
+                node.inDegree = 0;
+                this.index[node.id] = node;
+                this.nodes.push(node);
+            }
+
+            return this.index[node.id];
+        }
+    });
+    </script>
+</polymer-element>

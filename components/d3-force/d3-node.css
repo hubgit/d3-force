@@ -1,0 +1,41 @@
+:host {
+    cursor: pointer;
+    position: absolute;
+    display: inline-block;
+    z-index: 200;
+}
+
+:host(:hover) {
+    z-index: 1000;
+}
+
+:host(:hover) > span {
+    box-shadow: 0 2px 5px #333;
+}
+
+:host(:hover) .name {
+    color: white;
+    background-color: black;
+    box-shadow: 0 2px 5px #333;
+}
+
+:host > span {
+    display: inline-block;
+    position: relative;
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    background-size: cover;
+}
+
+.name {
+    position: absolute;
+    top: -25px;
+    font-size: 15px;
+    white-space: nowrap;
+    background-color: white;
+    padding: 0 10px;
+    color: black;
+    border: 2px solid #000;
+    border-radius: 20px;
+}

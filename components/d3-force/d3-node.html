@@ -1,0 +1,11 @@
+<link rel="import" href="../polymer/polymer.html">
+
+<polymer-element name="d3-node" attributes="item" noscript>
+    <template>
+        <link rel="stylesheet" href="d3-node.css">
+        <span selected?="{{ item.selected }}" expanded?="{{ item.expanded }}"
+            style="background-image:url({{ item.images[2].url }})">
+            <span class="name">{{ item.name }}</span>
+        </span>
+    </template>
+</polymer-element>

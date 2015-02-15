@@ -1,0 +1,36 @@
+{
+  "name": "d3-force",
+  "authors": [
+    "Alf Eaton <eaton.alf@gmail.com>"
+  ],
+  "description": "Node layout using D3's force graph",
+  "keywords": [
+    "seed",
+    "polymer",
+    "web-components",
+    "d3"
+  ],
+  "main": "d3-force.html",
+  "license": "MIT",
+  "homepage": "http://github.com/hubgit/d3-force/",
+  "ignore": [
+    "/.*",
+    "/tests/"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#^0.5.1",
+    "d3": "^3.5.3",
+    "font-roboto": "Polymer/font-roboto#~0.5.4"
+  },
+  "devDependencies": {},
+  "_release": "4dc943c9b1",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "4dc943c9b1fb295554dbe3d2845f385b1c34f027"
+  },
+  "_source": "git://github.com/hubgit/d3-force.git",
+  "_target": "master",
+  "_originalSource": "hubgit/d3-force",
+  "_direct": true
+}
