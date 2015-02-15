@@ -112,7 +112,7 @@
             });
         },
         nodeSize: function(d) {
-            return '13px';
+            return '100%';
         },
         tick: function() {
             //var ticks = Math.ceil(this.nodes.length / 50);
@@ -157,11 +157,13 @@
 
             if (d.selected) {
                 // expand linked nodes if already selected
+                /*
                 this.links.filter(function(link) {
                     return !link.target.selected && link.source.id === d.id && link.target.type === d.type;
                 }).forEach(function(link) {
                     this.click(link.target);
                 }.bind(this));
+                */
             } else {
                 d.selected = true;
 

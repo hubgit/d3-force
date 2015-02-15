@@ -19,6 +19,7 @@
 
 #labels {
     transform-style: preserve-3d;
+    font-size: 13px;
 }
 
 .label {
@@ -46,4 +47,5 @@
 .label[data-selected=true],
 .label[data-expanded=true] {
     background-color: rgb(30, 140, 32);
+    z-index: 1000;
 }
